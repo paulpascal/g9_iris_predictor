@@ -1,0 +1,31 @@
+name: Cleanup Artifacts
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Runs weekly on Sunday at midnight
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Cleanup old artifacts
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "Fetching artifacts older than 30 days..."
+        artifacts=$(gh api repos/:owner/:repo/actions/artifacts --paginate -q '.artifacts[] | select(.created_at < (now - 2592000 | strftime("%Y-%m-%dT%H:%M:%SZ"))) | .id')
+
+        if [ -n "$artifacts" ]; then
+          echo "Found artifacts to delete:"
+          echo "$artifacts"
+
+          for artifact_id in $artifacts; do
+            echo "Deleting artifact $artifact_id"
+            gh api repos/:owner/:repo/actions/artifacts/$artifact_id -X DELETE
+          done
+        else
+          echo "No artifacts older than 30 days found."
+        fi
