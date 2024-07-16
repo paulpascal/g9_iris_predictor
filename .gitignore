@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.log
+
+# Virtualenv
+venv/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# Docker
+*.env
+docker-compose.override.yml
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.cache
+
+# Test reports
+junitxml.xml
+test-results.xml
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Model files
+model/model.pkl
