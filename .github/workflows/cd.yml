@@ -40,14 +40,18 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/g9-iris-species-predictor:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/g9-iris-species-predictor:latest
-
+    
+    - name: Prepare SSH key
+      run: |
+        echo "${{ secrets.AWS_KEY }}" > aws_key.pem
+        chmod 600 aws_key.pem
+  
     - name: Deploy to AWS EC2
       env:
-        AWS_KEY: ${{ secrets.AWS_KEY }}
         AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
         AWS_HOST: ${{ secrets.AWS_HOST }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i $AWS_KEY $AWS_USERNAME@$AWS_HOST << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i aws_key.pem $AWS_USERNAME@$AWS_HOST << 'EOF'
           docker-compose down
           docker-compose pull
           docker-compose up -d
