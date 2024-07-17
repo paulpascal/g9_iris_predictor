@@ -4,4 +4,4 @@ services:
   app:
     image: paulpascal/g9-iris-species-predictor:latest
     ports:
-      - "5555:5555"
+      - "5555:80"
