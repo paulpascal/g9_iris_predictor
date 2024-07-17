@@ -46,12 +46,20 @@ jobs:
         echo "${{ secrets.AWS_KEY }}" > aws_key.pem
         chmod 400 aws_key.pem
   
-    - name: Copy and Deploy to AWS EC2
+    - name: Copy files to EC2
       env:
         AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
         AWS_HOST: ${{ secrets.AWS_HOST }}
       run: |
         scp -o StrictHostKeyChecking=no -i aws_key.pem docker-compose.yml $AWS_USERNAME@$AWS_HOST:/home/$AWS_USERNAME/docker-compose.yml
+  
+    - name: Deploy to AWS EC2
+      env:
+        AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
+        AWS_HOST: ${{ secrets.AWS_HOST }}
+      run: |
         ssh -o StrictHostKeyChecking=no -i aws_key.pem $AWS_USERNAME@$AWS_HOST << 'EOF'
-          cd /home/$AWS_USERNAME && docker-compose down && docker-compose pull && docker-compose up -d
+          docker-compose -f /home/$AWS_USERNAME/docker-compose.yml down
+          docker-compose -f /home/$AWS_USERNAME/docker-compose.yml pull
+          docker-compose -f /home/$AWS_USERNAME/docker-compose.yml up -d
         EOF
