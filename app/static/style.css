@@ -7,43 +7,51 @@ body {
   height: 100vh;
   margin: 0;
 }
+
 .container {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
 }
+
 h1 {
   color: #333;
 }
+
 p.message {
   color: #666;
   margin-bottom: 20px;
 }
+
 form {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 label {
   margin-bottom: 5px;
   font-weight: bold;
   color: #555;
 }
+
 input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 .hint {
   font-size: 0.9em;
   color: #888;
   margin-top: -8px;
   margin-bottom: 10px;
 }
+
 button {
   padding: 10px;
   background-color: #007bff;
@@ -53,9 +61,20 @@ button {
   cursor: pointer;
   font-size: 16px;
 }
+
+#clear-button {
+  background-color: #f44336;
+  margin-top: 10px;
+}
+
+#clear-button:hover {
+  background-color: #d32f2f;
+}
+
 button:hover {
   background-color: #0056b3;
 }
+
 #prediction {
   margin-top: 20px;
   margin-bottom: 20px;

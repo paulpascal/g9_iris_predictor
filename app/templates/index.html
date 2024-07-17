@@ -56,11 +56,13 @@
         <div class="hint">e.g., 0.2</div>
 
         <button type="submit">Predict</button>
+        <button type="button" id="clear-button">Clear Form</button>
       </form>
       <div id="prediction"></div>
     </div>
 
     <script>
+      // Handle form submit
       document.getElementById("predict-form").onsubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
@@ -77,6 +79,12 @@
         document.getElementById("prediction").innerText = `Predicted Species: ${
           speciesMap[data.result.prediction]
         }`;
+      };
+
+      // clear form
+      document.getElementById("clear-button").onclick = () => {
+        document.getElementById("predict-form").reset();
+        document.getElementById("prediction").innerText = "";
       };
     </script>
   </body>
