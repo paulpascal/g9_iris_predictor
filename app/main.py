@@ -26,6 +26,3 @@ def predict():
         print(e)
         return jsonify(error={"message": "An error has occurred"})
 
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5555)
