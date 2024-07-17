@@ -17,11 +17,9 @@ jobs:
       id: vars
       run: echo "::set-output name=sha::$(git rev-parse HEAD)"
 
-    - name: Download model
-      uses: actions/download-artifact@v2
-      with:
-        name: model-${{ steps.vars.outputs.sha }}
-        path: model/
+    - name: Train model
+      run: |
+        python app/train.py
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
