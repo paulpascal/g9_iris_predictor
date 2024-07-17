@@ -79,12 +79,14 @@
         document.getElementById("prediction").innerText = `Predicted Species: ${
           speciesMap[data.result.prediction]
         }`;
+        document.getElementById("clear-button").style.display = "block";
       };
 
       // clear form
       document.getElementById("clear-button").onclick = () => {
         document.getElementById("predict-form").reset();
         document.getElementById("prediction").innerText = "";
+        document.getElementById("clear-button").style.display = "none";
       };
     </script>
   </body>
