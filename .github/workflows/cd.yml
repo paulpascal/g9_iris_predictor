@@ -13,15 +13,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Get the latest commit SHA
-      id: vars
-      run: echo "::set-output name=sha::$(git rev-parse HEAD)"
-
-    - name: Download model
-      uses: actions/download-artifact@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        name: model-${{ steps.vars.outputs.sha }}
-        path: model/
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Train model
+      run: |
+        python app/train.py
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -38,8 +42,12 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/g9-iris-species-predictor:latest
 
     - name: Deploy to AWS EC2
+      env:
+        AWS_KEY: ${{ secrets.AWS_KEY }}
+        AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
+        AWS_HOST: ${{ secrets.AWS_HOST }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.AWS_KEY }} ${{ secrets.AWS_USERNAME }}@${{ secrets.AWS_HOST }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i $AWS_KEY $AWS_USERNAME@$AWS_HOST << 'EOF'
           docker-compose down
           docker-compose pull
           docker-compose up -d
