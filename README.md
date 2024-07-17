@@ -34,7 +34,3 @@ Run tests with:
 ```bash
 pytest tests
 ```
-
-## Cleanup
-
-Artifacts older than 30 days are automatically cleaned up by a scheduled GitHub Action.
