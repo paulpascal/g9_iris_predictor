@@ -53,8 +53,5 @@ jobs:
       run: |
         scp -o StrictHostKeyChecking=no -i aws_key.pem docker-compose.yml $AWS_USERNAME@$AWS_HOST:/home/$AWS_USERNAME/docker-compose.yml
         ssh -o StrictHostKeyChecking=no -i aws_key.pem $AWS_USERNAME@$AWS_HOST << 'EOF'
-          cd /home/$AWS_USERNAME
-          docker-compose down
-          docker-compose pull
-          docker-compose up -d
+          cd /home/$AWS_USERNAME && docker-compose down && docker-compose pull && docker-compose up -d
         EOF
