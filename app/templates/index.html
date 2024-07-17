@@ -1,41 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Iris Species Predictor</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+  <head>
+    <title>G9: Iris Species Predictor</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
     <div class="container">
-        <h1>Iris Species Predictor</h1>
-        <form action="/predict" method="post">
-            <label for="sepal_length">Sepal Length:</label>
-            <input type="text" id="sepal_length" name="sepal_length" required><br>
+      <h1>Iris Species Predictor</h1>
+      <p class="message">
+        Enter the measurements of the iris flower below to predict its species.
+      </p>
+      <form id="predict-form">
+        <label for="sepal_length">Sepal Length:</label>
+        <input
+          type="number"
+          id="sepal_length"
+          name="sepal_length"
+          step="any"
+          required
+        />
+        <div class="hint">e.g., 5.1</div>
 
-            <label for="sepal_width">Sepal Width:</label>
-            <input type="text" id="sepal_width" name="sepal_width" required><br>
+        <label for="sepal_width">Sepal Width:</label>
+        <input
+          type="number"
+          id="sepal_width"
+          name="sepal_width"
+          step="any"
+          required
+        />
+        <div class="hint">e.g., 3.5</div>
 
-            <label for="petal_length">Petal Length:</label>
-            <input type="text" id="petal_length" name="petal_length" required><br>
+        <label for="petal_length">Petal Length:</label>
+        <input
+          type="number"
+          id="petal_length"
+          name="petal_length"
+          step="any"
+          required
+        />
+        <div class="hint">e.g., 1.4</div>
 
-            <label for="petal_width">Petal Width:</label>
-            <input type="text" id="petal_width" name="petal_width" required><br>
+        <label for="petal_width">Petal Width:</label>
+        <input
+          type="number"
+          id="petal_width"
+          name="petal_width"
+          step="any"
+          required
+        />
+        <div class="hint">e.g., 0.2</div>
 
-            <button type="submit">Predict</button>
-        </form>
-        <div id="prediction"></div>
+        <button type="submit">Predict</button>
+      </form>
+      <div id="prediction"></div>
     </div>
 
     <script>
-        document.querySelector('form').onsubmit = async (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const response = await fetch('/predict', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
-            document.getElementById('prediction').innerText = `Predicted Species: ${data.prediction}`;
-        }
+      document.getElementById("predict-form").onsubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const response = await fetch("/predict", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+        const speciesMap = {
+          0: "Setosa",
+          1: "Versicolor",
+          2: "Virginica",
+        };
+        document.getElementById("prediction").innerText = `Predicted Species: ${
+          speciesMap[data.result.prediction]
+        }`;
+      };
     </script>
-</body>
+  </body>
 </html>
